@@ -67,7 +67,7 @@ return function (App $app) {
         	Can_min,
         	Provedor
         FROM
-        	almacent;';
+        	almacen;';
       // Ejecución de query
       $datos = mysqli_query($conn, $tsql);
       // Validamos la respuesta del query
@@ -93,9 +93,64 @@ return function (App $app) {
       echo("Error!");
     }
     // Preparamos respuesta
-  	$response->withHeader('Content-Type', 'application/json');
-    $response->getBody()->write(json_encode($jsonData));
-    return $response;
+  	$newResponse = $response->withHeader('Content-Type', 'application/json');
+    $newResponse->getBody()->write(json_encode($jsonData));
+    return $newResponse;
   });
+
+  $app->post('/reglin', function ($request, $response, $args) {
+    $body = $request->getBody()->getContents();
+    $elementos = json_decode($body,true);
+    //$num1 = $elementos["num1"];
+    //$num2 = $elementos["num2"];
+    //$resultado = $num1 + $num2;
+
+    /*
+     * Dada la ecuación y = mx + b
+     *
+     *     n(∑(xi)(yi))-∑(xi)*∑(yi)
+     * m = ------------------------
+     *     n∑(xi^2) - (∑(xi))^2
+     *
+     *      ∑yi - (m * ∑xi)
+     * b = -----------------
+     *             n
+     *
+     * y = mx + b
+     *
+     */
+    /*
+    $v_x = [1, 2, 3, 4, 5];
+    $v_y = [5, 5, 5, 6.8, 9];
+    $pos = 100;
+     */
+    $v_x = $elementos["v_x"];
+    $v_y = $elementos["v_y"];
+    $pos = $elementos["pos"];
+
+
+    echo "Regresión lineal \n";
+
+    $n = count($v_x);
+    $x = 0;
+    $y = 0;
+    $xy = 0;
+    $xx = 0;
+    for($i = 0;$i < $n;$i++)
+    {
+      $x += $v_x[$i];
+      $y += $v_y[$i];
+      $xy += $v_x[$i] * $v_y[$i];
+      $xx += $v_x[$i] ** 2;
+    }
+
+    $m = (($n * $xy) - ($x * $y)) / (($n * $xx) - ($x ** 2));
+
+    $b = ($y - ($m * $x)) / $n;
+
+    //echo "\nResultado: ".(($m * $pos) + $b);
+    $response->getBody()->write('Resultado: '.(($m * $pos) + $b));
+    return $response;
+});
 
 };
