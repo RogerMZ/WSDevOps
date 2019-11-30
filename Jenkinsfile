@@ -9,7 +9,7 @@ pipeline {
 
     stage('Dependencias') {
       steps {
-        sh 'composer install'
+        echo 'Echo test'
       }
     }
 
