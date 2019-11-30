@@ -13,8 +13,31 @@ pipeline {
           steps {
             sh '''alias composer=\'php /opt/composer/composer.phar\'
 
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
 echo "Aqui elimino composer.lock"
-#rm composer.lock'''
+rm composer.lock
+
+
+
+
+
+
+
+
+'''
           }
         }
 
