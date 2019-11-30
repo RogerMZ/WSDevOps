@@ -153,4 +153,53 @@ return function (App $app) {
     return $response;
 });
 
+$app->post('/divisa', function ($request, $response, $args) {
+  $body = $request->getBody()->getContents();
+  $elementos = json_decode($body,true);
+  $can = $elementos["cantidad"];
+  $div = $elementos["divisa"];
+
+  if ($can == '' || $div == '') {
+    $response->withHeader('Content-Type', 'application/json');
+    $errResponse = $response->withStatus(400);
+    $errResponse->getBody()->write(json_encode(array('Error:' => 'Ingrese variables validas:// WARNING: ')));
+    return $errResponse;
+  }
+
+  try
+  {
+    $conn = OpenConnection();
+    // Armado de query
+    $tsql = "SELECT tasa FROM Divisas where divisa = '$div'";
+    // Ejecución de query
+    $datos = mysqli_query($conn, $tsql);
+    // Validamos la respuesta del query
+    if ($datos == FALSE) {
+      // Prepare response error
+      $response->withHeader('Content-Type', 'application/json');
+      $errResponse = $response->withStatus(400);
+      $errResponse->getBody()->write(json_encode(array('Error:' => mysqli_error($conn))));
+      return $errResponse;
+    }
+    $datosCount = 0;
+
+    $tasa = 0;
+    while($row = mysqli_fetch_array($datos))
+    {
+      $tasa = $row['tasa'];
+    }
+    mysqli_free_result($datos);
+    mysqli_close($conn);
+    $conv = $can * $tasa;
+  }
+  catch(Exception $e)
+  {
+    echo("Error!");
+  }
+
+  $response->withHeader('Content-Type', 'application/json');
+  $response->getBody()->write(json_encode(array('conversion' => $conv)));
+  return $response;
+});
+
 };
