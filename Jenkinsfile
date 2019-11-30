@@ -1,9 +1,9 @@
 pipeline {
   agent any
   stages {
-    stage('Init') {
+    stage('Instalar depdendencias') {
       steps {
-        sh 'echo "Inicio de proyecto"'
+        sh './scripts/install.sh'
       }
     }
 
