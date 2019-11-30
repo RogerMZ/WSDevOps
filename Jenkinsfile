@@ -21,7 +21,7 @@ pipeline {
 
     stage('Dependencias') {
       steps {
-        sh 'composer install'
+        sh 'composer'
       }
     }
 
