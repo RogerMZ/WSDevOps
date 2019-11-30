@@ -11,7 +11,9 @@ pipeline {
 
         stage('elimina locks') {
           steps {
-            sh '''echo "Aqui elimino composer.lock"
+            sh '''alias composer=\'php /opt/composer/composer.phar\'
+
+echo "Aqui elimino composer.lock"
 #rm composer.lock'''
           }
         }
