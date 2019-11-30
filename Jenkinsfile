@@ -23,7 +23,9 @@ echo "Aqui elimino composer.lock"
 
     stage('Dependencias') {
       steps {
-        sh 'composer'
+        sh '''alias composer=\'php /opt/composer/composer.phar\'
+
+composer install'''
       }
     }
 
