@@ -202,4 +202,29 @@ $app->post('/divisa', function ($request, $response, $args) {
   return $response;
 });
 
+  $app->post('/convbase', function ($request, $response, $args) {
+    $body = $request->getBody()->getContents();
+    $elementos = json_decode($body,true);
+    $valor = $elementos["valor"];
+    $deBase = $elementos["deBase"];
+    $aBase = $elementos["aBase"];
+    $resp = 0;
+    switch ($aBase) {
+      case 'bin':
+        $resp = "0b".decbin($valor);
+        break;
+      case 'oct':
+        $resp = "0o".decoct($valor);
+        break;
+      case 'hex':
+        $resp = "0x".dechex($valor);
+        break;
+      default:
+        $resp = "Base invalida";
+        break;
+    }
+    $response->getBody()->write(json_encode(array($deBase => $valor, $aBase => $resp)));
+    return $response;
+  });
+
 };
