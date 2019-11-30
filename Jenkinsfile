@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('Instalar depdendencias') {
       steps {
-        sh './scripts/install.sh'
+        sh 'sh scripts/install.sh'
       }
     }
 
