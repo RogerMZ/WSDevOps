@@ -7,6 +7,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\App;
 use Slim\Interfaces\RouteCollectorProxyInterface as Group;
+use App\Application\Actions\Webscraping\WebscrapingAction;
 require 'db.php';
 
 return function (App $app) {
@@ -226,5 +227,14 @@ $app->post('/divisa', function ($request, $response, $args) {
     $response->getBody()->write(json_encode(array($deBase => $valor, $aBase => $resp)));
     return $response;
   });
+
+  //webscrap
+  $app->get('/webscrap/course/{search}', function (Request $request, Response $response, $args) {
+        $webscrap = new WebscrapingAction();
+        $list = $webscrap->getCourses($args["search"]);
+        $response->withHeader('Content-Type', 'application/json');
+        $response->getBody()->write(json_encode($list));
+        return $response;
+    });
 
 };
