@@ -3,8 +3,8 @@
 function OpenConnection()
 {
   session_write_close();
-  $serverName = "138.68.2.24"; //serverName\instanceName
-  $port = 3308;
+  $serverName = "172.18.0.2"; //serverName\instanceName
+  $port = 3306;
   $Database = "tg2019_almacen";
   //$Uid = "tgurus_alumno";
   //$PWD = "tg2019";
